@@ -55,9 +55,25 @@ const login = async (request) => {
     loginRequest.password,
     user.password
   );
+
   if (!isPasswordValid) {
     throw new ResponseError(401, "Username or password wrong");
   }
+
+  const checkRewardToday = await prismaClient.reward.findFirst({
+    where: {
+      user_id: user.id,
+    },
+  });
+
+  // if (!checkRewardToday) {
+  //   await prismaClient.reward.create({
+  //     data: {
+  //       user_id: user.id,
+  //       available_at: new Date(),
+  //     },
+  //   });
+  // }
 
   const token = uuid().toString();
   const updateUser = await prismaClient.user.update({

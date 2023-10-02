@@ -40,6 +40,10 @@ const createManyTestUser = async () => {
   });
 };
 
+const deleteManyRewardsTestUser = async () => {
+  await prismaClient.reward.deleteMany();
+};
+
 const deleteManyTestUser = async () => {
   const usernames = [];
 
@@ -61,4 +65,5 @@ export {
   createTestUser,
   createManyTestUser,
   deleteManyTestUser,
+  deleteManyRewardsTestUser,
 };
