@@ -55,11 +55,8 @@ describe("POST /api/login", () => {
     await createTestUser();
   });
 
-  // afterEach(async () => {
-  //   await deleteManyRewardsTestUser();
-  // });
-
   afterEach(async () => {
+    //await deleteManyRewardsTestUser();
     await removeTestUser();
   });
 

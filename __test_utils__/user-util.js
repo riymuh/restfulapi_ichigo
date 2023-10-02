@@ -15,6 +15,14 @@ const createTestUser = async () => {
 };
 
 const removeTestUser = async () => {
+  // const user = await prismaClient.user.findFirst({
+  //   where: {
+  //     username: "test",
+  //   },
+  // });
+
+  await prismaClient.reward.deleteMany();
+
   await prismaClient.user.deleteMany({
     where: {
       username: "test",
@@ -41,7 +49,16 @@ const createManyTestUser = async () => {
 };
 
 const deleteManyRewardsTestUser = async () => {
-  await prismaClient.reward.deleteMany();
+  const user = await prismaClient.user.findFirst({
+    where: {
+      username: "test",
+    },
+  });
+  await prismaClient.reward.delete({
+    where: {
+      user_id: user.id,
+    },
+  });
 };
 
 const deleteManyTestUser = async () => {

@@ -60,20 +60,26 @@ const login = async (request) => {
     throw new ResponseError(401, "Username or password wrong");
   }
 
-  const checkRewardToday = await prismaClient.reward.findFirst({
+  const checkRewardToday = await prismaClient.reward.count({
     where: {
       user_id: user.id,
+      available_at: {
+        gte: new Date(Date.now()),
+      },
     },
   });
 
-  // if (!checkRewardToday) {
-  //   await prismaClient.reward.create({
-  //     data: {
-  //       user_id: user.id,
-  //       available_at: new Date(),
-  //     },
-  //   });
-  // }
+  //return checkRewardToday;
+
+  if (checkRewardToday === 0) {
+    await prismaClient.reward.create({
+      data: {
+        user_id: user.id,
+        available_at: new Date(Date.now()),
+        expired_at: new Date(Date.now() + 2 * 86400000),
+      },
+    });
+  }
 
   const token = uuid().toString();
   const updateUser = await prismaClient.user.update({
