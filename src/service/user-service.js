@@ -26,19 +26,31 @@ const getSingleUser = async (username) => {
   return user;
 };
 
-const getUserRewards = async (username, query) => {
+const getUserRewards = async (username, at) => {
   const user = await prismaClient.user.findFirst({
     where: {
       username: username,
     },
-    select: {
-      name: true,
-      username: true,
-      rewards: true,
+  });
+
+  if (!user) {
+    throw new ResponseError(404, "user is not found");
+  }
+
+  const rewards = await prismaClient.reward.findMany({
+    where: {
+      user_id: user.id,
+      available_at: {
+        gte: new Date(at).toISOString(),
+      },
     },
   });
 
-  return user;
+  if (!rewards) {
+    throw new ResponseError(200, "user have't rewards");
+  }
+
+  return rewards;
 };
 
 export default { getAllUsers, getSingleUser, getUserRewards };

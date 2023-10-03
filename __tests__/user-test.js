@@ -35,7 +35,11 @@ describe("GET /api/users", () => {
   });
 
   it("should can rewards data with parameter user", async () => {
-    const result = await supertest(web).get("/api/users/test__1/rewards");
+    const result = await supertest(web)
+      .get("/api/users/test__1/rewards")
+      .query({
+        at: new Date(),
+      });
 
     expect(result.status).toBe(200);
   });

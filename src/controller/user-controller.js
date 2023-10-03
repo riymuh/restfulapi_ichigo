@@ -26,8 +26,8 @@ const getSingleUser = async (req, res, next) => {
 const getUserRewards = async (req, res, next) => {
   try {
     const { username } = req.params;
-    const query = null;
-    const result = await userService.getUserRewards(username, query);
+    const { at } = req.query;
+    const result = await userService.getUserRewards(username, at);
     res.status(200).json({
       data: result,
     });
